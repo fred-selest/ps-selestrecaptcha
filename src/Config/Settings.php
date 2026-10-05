@@ -59,6 +59,9 @@ final class Settings
         public readonly bool $logEvents = true,
         public readonly string $endpoint = self::ENDPOINT,
         public readonly int $timeout = 5,
+        /** Opt-in: one anonymous ping per install or upgrade, never on page loads. */
+        public readonly bool $statsEnabled = false,
+        public readonly string $statsEndpoint = '',
         /** @var array<string, TargetSettings> */
         public readonly array $targets = [],
         /** @var array<string, string> */
@@ -125,6 +128,9 @@ final class Settings
             // shop's country, and some merchants must not call it directly.
             endpoint: self::toEndpoint($raw['endpoint'] ?? self::ENDPOINT),
             timeout: self::toTimeout($raw['timeout'] ?? 5),
+            statsEnabled: self::toBool($raw['stats_enabled'] ?? false),
+            // Same rules as the verification endpoint: HTTPS, or loopback.
+            statsEndpoint: self::toStatsEndpoint($raw['stats_endpoint'] ?? ''),
             targets: $targets,
             messages: $messages,
             shopUrls: $shopUrls,
@@ -152,6 +158,8 @@ final class Settings
             'log_events' => $this->logEvents,
             'endpoint' => $this->endpoint,
             'timeout' => $this->timeout,
+            'stats_enabled' => $this->statsEnabled,
+            'stats_endpoint' => $this->statsEndpoint,
             'targets' => $targets,
             'messages' => $this->messages,
         ];
@@ -284,6 +292,22 @@ final class Settings
         }
 
         return (int) max(1, min(15, (int) $value));
+    }
+
+    /**
+     * An endpoint for the statistics ping, validated like the verification one.
+     * Unlike that one there is no default: an unusable value switches the
+     * feature off instead of quietly posting to Google.
+     */
+    private static function toStatsEndpoint(mixed $value): string
+    {
+        if (!is_string($value) || trim($value) === '') {
+            return '';
+        }
+
+        $checked = self::toEndpoint(trim($value));
+
+        return $checked === self::ENDPOINT ? '' : $checked;
     }
 
     private static function toEndpoint(mixed $value): string

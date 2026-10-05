@@ -31,6 +31,10 @@ Première version.
 - Un autoloader PSR-4 de secours : aucune installation de Composer sur le
   serveur du marchand.
 - Traductions **français et anglais** de l'interface (`translations/fr-FR`).
+- Statistiques d'installation : un message anonyme par installation et par mise à
+  jour, vers un point de collecte choisi par le marchand, désactivé par défaut.
+- Détection d'un autre module reCAPTCHA installé, avec un avertissement dans le
+  back-office.
 - Suites de tests : unitaires, intégration (un faux du point de vérification de
   Google), end-to-end en HTTP réel contre PrestaShop 8.2.8 et 9.2.0, un harnais
   de rendu du back-office, et un test navigateur pour le widget.

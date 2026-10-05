@@ -75,6 +75,12 @@ simplement injoignable.
   gestionnaire de consentement peut empêcher le widget de se charger.
 - **Sans Composer, sans build.** Le module embarque son propre autoloader
   PSR-4.
+- **Compte les installations, si vous le voulez.** Un unique message anonyme par
+  installation et par mise à jour — versions du module et de la boutique, langue.
+  Ni nom de boutique, ni adresse, ni e-mail, ni donnée client. Désactivé par
+  défaut, avec le contenu exact du message écrit sous l'interrupteur.
+- **Détecte un autre module reCAPTCHA** installé sur la boutique et prévient dans
+  le back-office : deux captchas sur le même formulaire ne protègent à rien.
 
 ## Prérequis
 
@@ -156,6 +162,20 @@ parce que le widget est précisément ce qu'un test HTTP n'exécute jamais :
 pip install playwright && playwright install chromium
 python tests/e2e/browser.py http://127.0.0.1 /chemin/vers/prestashop
 ```
+
+## Statistiques d'installation
+
+Par défaut, **rien n'est envoyé**. Si vous activez l'option, un message part une
+seule fois à l'installation et une fois à chaque mise à jour :
+
+```
+event=install&module=selestrecaptcha&module_version=1.0.0
+&prestashop_version=9.2.0&php_version=8.2.34&locale=fr-FR&protected_forms=4
+```
+
+Le point de collecte est le vôtre (HTTPS, ou loopback). Le bouton **Envoyer
+maintenant** envoie le message depuis le back-office pour que vous voyiez ce qui
+part. Une collecte qui échoue n'interrompt jamais l'installation.
 
 ## À savoir
 

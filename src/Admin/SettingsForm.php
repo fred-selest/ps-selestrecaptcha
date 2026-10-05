@@ -34,6 +34,7 @@ final class SettingsForm
 {
     public const INPUT = 'selestrecaptcha';
     public const TEST_BUTTON = 'selestrecaptcha_test';
+    public const STATS_BUTTON = 'selestrecaptcha_stats';
 
     public function __construct(private readonly \Module $module)
     {
@@ -222,6 +223,45 @@ final class SettingsForm
             ],
         ];
 
+        $fieldsets['statistics'] = [
+            'form' => [
+                'legend' => [
+                    'title' => $this->t('Installation statistics', \Selestrecaptcha::TRANSLATION_DOMAIN),
+                    'icon' => 'icon-chart',
+                ],
+                'input' => [
+                    [
+                        'type' => 'switch',
+                        'label' => $this->t('Count my installations', \Selestrecaptcha::TRANSLATION_DOMAIN),
+                        'hint' => $this->t(
+                            'Off by default. One anonymous message per installation and per upgrade: module and shop versions, locale. No shop name, no address, no e-mail, no customer data.',
+                            \Selestrecaptcha::TRANSLATION_DOMAIN
+                        ),
+                        'name' => self::INPUT . '[stats_enabled]',
+                        'is_bool' => true,
+                        'values' => [
+                            ['id' => 'stats_on', 'value' => 1, 'label' => $this->t('Yes', \Selestrecaptcha::TRANSLATION_DOMAIN)],
+                            ['id' => 'stats_off', 'value' => 0, 'label' => $this->t('No', \Selestrecaptcha::TRANSLATION_DOMAIN)],
+                        ],
+                    ],
+                    [
+                        'type' => 'text',
+                        'name' => self::INPUT . '[stats_endpoint]',
+                        'label' => $this->t('Statistics endpoint', \Selestrecaptcha::TRANSLATION_DOMAIN),
+                        'hint' => $this->t('HTTPS only. Left empty, nothing is ever sent.', \Selestrecaptcha::TRANSLATION_DOMAIN),
+                        'size' => 60,
+                    ],
+                ],
+                'buttons' => [[
+                    'name' => self::STATS_BUTTON,
+                    'type' => 'submit',
+                    'title' => $this->t('Send it now', \Selestrecaptcha::TRANSLATION_DOMAIN),
+                    'class' => 'btn btn-default pull-left',
+                    'icon' => 'icon-envelope',
+                ]],
+            ],
+        ];
+
         // HelperForm only draws the buttons declared in the fieldset itself:
         // every panel gets a Save button, and the key self test sits next to the
         // keys it checks.
@@ -252,6 +292,8 @@ final class SettingsForm
         $raw = $settings->toArray();
         $values = [
             self::INPUT . '[enabled]' => $raw['enabled'] ? 1 : 0,
+            self::INPUT . '[stats_enabled]' => $raw['stats_enabled'] ? 1 : 0,
+            self::INPUT . '[stats_endpoint]' => $raw['stats_endpoint'],
             self::INPUT . '[version]' => $raw['version'],
             self::INPUT . '[site_key]' => $raw['site_key'],
             self::INPUT . '[secret_key]' => $raw['secret_key'],

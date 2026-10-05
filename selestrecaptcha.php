@@ -13,6 +13,7 @@ if (!defined('_PS_VERSION_')) {
 
 require_once __DIR__ . '/src/autoload.php';
 
+use SelestRecaptcha\Admin\ConflictingModules;
 use SelestRecaptcha\Admin\SettingsForm;
 use SelestRecaptcha\Config\ConfigurationStore;
 use SelestRecaptcha\Config\RecaptchaVersion;
@@ -28,6 +29,7 @@ use SelestRecaptcha\Http\CurlTransport;
 use SelestRecaptcha\Log\EventLoggerInterface;
 use SelestRecaptcha\Log\NullEventLogger;
 use SelestRecaptcha\Log\PsEventLogger;
+use SelestRecaptcha\Stats\InstallReporter;
 use SelestRecaptcha\Verification\Judgement;
 use SelestRecaptcha\Verification\SubmissionJudge;
 use SelestRecaptcha\Verification\Verifier;
@@ -40,6 +42,7 @@ class Selestrecaptcha extends Module
 
     public const ADMIN_SAVE_BUTTON = 'submitSettings';
     public const ADMIN_TEST_BUTTON = 'selestrecaptcha_test';
+    public const ADMIN_STATS_BUTTON = 'selestrecaptcha_stats';
 
     /** Front controller hook that runs before any core handler acts on the POST. */
     public const GUARD_HOOK = 'actionFrontControllerInitBefore';
@@ -95,8 +98,26 @@ class Selestrecaptcha extends Module
         $store = new ConfigurationStore();
 
         if (!$store->exists()) {
-            $store->save(Settings::defaults($this->translatedMessages()));
+            $settings = Settings::defaults($this->translatedMessages());
+            $store->save($settings);
+        } else {
+            $settings = $store->load($this->currentShopId());
         }
+
+        // Opt-in, and never able to fail the installation.
+        (new InstallReporter(new CurlTransport()))
+            ->report(InstallReporter::EVENT_INSTALL, $settings, $this->version);
+
+        return true;
+    }
+
+    /**
+     * Called by PrestaShop when a newer version replaces the installed one.
+     */
+    public function upgrade($version)
+    {
+        (new InstallReporter(new CurlTransport()))
+            ->report(InstallReporter::EVENT_UPGRADE, $this->settings(), $this->version);
 
         return true;
     }
@@ -285,6 +306,10 @@ class Selestrecaptcha extends Module
             $output .= $this->renderKeyDiagnostic();
         }
 
+        if (Tools::isSubmit(self::ADMIN_STATS_BUTTON)) {
+            $output .= $this->renderInstallPing();
+        }
+
         if (Tools::isSubmit(self::ADMIN_SAVE_BUTTON) || Tools::isSubmit('submitAdd')) {
             $posted = Tools::getValue(SettingsForm::INPUT);
             $raw = is_array($posted) ? $posted : [];
@@ -321,6 +346,19 @@ class Selestrecaptcha extends Module
         if ($settings->enabled && ($settings->siteKey === '' || $settings->secretKey === '')) {
             $output .= $this->notice(
                 $this->trans('Protection is enabled but no key is set: nothing is being verified yet.', [], self::TRANSLATION_DOMAIN),
+                'warn'
+            );
+        }
+
+        $conflicts = (new ConflictingModules($this->name))->active();
+
+        if ($conflicts !== []) {
+            $output .= $this->notice(
+                $this->trans(
+                    'Another reCAPTCHA module is still installed on this shop (%s). Two captchas on the same form protect nothing: uninstall the other one.',
+                    [implode(', ', $conflicts)],
+                    self::TRANSLATION_DOMAIN
+                ),
                 'warn'
             );
         }
@@ -403,6 +441,35 @@ class Selestrecaptcha extends Module
         $helper->fields_value = $form->values($settings);
 
         return (string) $helper->generateForm($form->formArray($settings));
+    }
+
+    /**
+     * Sends the installation ping by hand, so the merchant can see it leave the
+     * shop rather than trusting a switch.
+     */
+    private function renderInstallPing(): string
+    {
+        $settings = $this->settings();
+        $sent = (new InstallReporter(new CurlTransport()))
+            ->report(InstallReporter::EVENT_INSTALL, $settings, $this->version);
+
+        if (!$settings->statsEnabled || $settings->statsEndpoint === '') {
+            return $this->notice(
+                $this->trans(
+                    'Set an HTTPS statistics endpoint first; nothing was sent.',
+                    [],
+                    self::TRANSLATION_DOMAIN
+                ),
+                'warn'
+            );
+        }
+
+        return $this->notice(
+            $sent
+                ? $this->trans('The installation ping was sent to the endpoint you set.', [], self::TRANSLATION_DOMAIN)
+                : $this->trans('The endpoint did not answer. Check the address, then try again.', [], self::TRANSLATION_DOMAIN),
+            $sent ? 'success' : 'error'
+        );
     }
 
     private function renderKeyDiagnostic(): string

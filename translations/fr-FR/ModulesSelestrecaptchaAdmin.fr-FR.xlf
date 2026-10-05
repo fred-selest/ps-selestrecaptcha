@@ -187,6 +187,46 @@
                 <source>v3 — invisible, scored</source>
                 <target>v3 — invisible, avec score</target>
             </trans-unit>
+            <trans-unit id="47" resname="Installation statistics">
+                <source>Installation statistics</source>
+                <target>Statistiques d&#x27;installation</target>
+            </trans-unit>
+            <trans-unit id="48" resname="Count my installations">
+                <source>Count my installations</source>
+                <target>Compter mes installations</target>
+            </trans-unit>
+            <trans-unit id="49" resname="Off by default. One anonymous message per installation and per upgrade: module and shop versions, locale. No shop name, no address, no e-mail, no customer data.">
+                <source>Off by default. One anonymous message per installation and per upgrade: module and shop versions, locale. No shop name, no address, no e-mail, no customer data.</source>
+                <target>Désactivé par défaut. Un message anonyme par installation et par mise à jour : versions du module et de la boutique, langue. Ni nom de boutique, ni adresse, ni e-mail, ni donnée client.</target>
+            </trans-unit>
+            <trans-unit id="50" resname="Statistics endpoint">
+                <source>Statistics endpoint</source>
+                <target>Point de collecte des statistiques</target>
+            </trans-unit>
+            <trans-unit id="51" resname="HTTPS only. Left empty, nothing is ever sent.">
+                <source>HTTPS only. Left empty, nothing is ever sent.</source>
+                <target>HTTPS uniquement. Laisser vide : rien n&#x27;est jamais envoyé.</target>
+            </trans-unit>
+            <trans-unit id="52" resname="Send it now">
+                <source>Send it now</source>
+                <target>Envoyer maintenant</target>
+            </trans-unit>
+            <trans-unit id="53" resname="Set an HTTPS statistics endpoint first; nothing was sent.">
+                <source>Set an HTTPS statistics endpoint first; nothing was sent.</source>
+                <target>Renseignez d&#x27;abord un point de collecte en HTTPS ; rien n&#x27;a été envoyé.</target>
+            </trans-unit>
+            <trans-unit id="54" resname="The installation ping was sent to the endpoint you set.">
+                <source>The installation ping was sent to the endpoint you set.</source>
+                <target>Le message d&#x27;installation a été envoyé au point de collecte que vous avez défini.</target>
+            </trans-unit>
+            <trans-unit id="55" resname="The endpoint did not answer. Check the address, then try again.">
+                <source>The endpoint did not answer. Check the address, then try again.</source>
+                <target>Le point de collecte n&#x27;a pas répondu. Vérifiez l&#x27;adresse, puis réessayez.</target>
+            </trans-unit>
+            <trans-unit id="56" resname="Another reCAPTCHA module is still installed on this shop (%s). Two captchas on the same form protect nothing: uninstall the other one.">
+                <source>Another reCAPTCHA module is still installed on this shop (%s). Two captchas on the same form protect nothing: uninstall the other one.</source>
+                <target>Un autre module reCAPTCHA est toujours installé sur cette boutique (%s). Deux captchas sur le même formulaire ne protègent à rien : désinstallez l&#x27;autre.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

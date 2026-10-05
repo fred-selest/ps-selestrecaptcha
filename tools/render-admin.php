@@ -156,6 +156,9 @@ $expected = [
     'selestrecaptcha[targets][comment][min_score]' => 'le seuil des avis',
     'selestrecaptcha_test' => 'le test des clés',
     'selestrecaptcha[messages][block]' => 'le message au visiteur',
+    'selestrecaptcha[stats_enabled]' => "l'interrupteur de statistiques",
+    'selestrecaptcha[stats_endpoint]' => 'le point de collecte',
+    'selestrecaptcha_stats' => "le bouton d'envoi",
 ];
 
 $failures = 0;
