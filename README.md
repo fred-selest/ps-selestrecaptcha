@@ -4,113 +4,123 @@
 
 <h1 align="center">Selest reCAPTCHA</h1>
 
-<p align="center">Google reCAPTCHA for the PrestaShop forms that collect the most spam.</p>
+<p align="center">Google reCAPTCHA pour les formulaires PrestaShop qui reçoivent le plus de spam.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/PrestaShop-8.2%20LTS%20%7C%209.x-8f5ba2?logo=prestashop&logoColor=white" alt="PrestaShop 8.2 LTS and 9.x">
+  <img src="https://img.shields.io/badge/PrestaShop-8.2%20LTS%20%7C%209.x-8f5ba2?logo=prestashop&logoColor=white" alt="PrestaShop 8.2 LTS et 9.x">
   <img src="https://img.shields.io/badge/license-AFL--3.0-1f6feb" alt="AFL-3.0">
   <img src="https://github.com/fred-selest/ps-selestrecaptcha/actions/workflows/tests.yml/badge.svg" alt="Tests">
 </p>
 
 ---
 
-Spam does not arrive through your storefront, it arrives through your forms: the
-contact form, account creation, the newsletter block, product reviews. This
-module puts Google's reCAPTCHA on those four, and **verifies every token
-server-side before the shop acts on the submission**. A missing or refused token
-means the core handler never sees the POST.
+Le spam n'arrive pas par la boutique, il arrive par les formulaires : le
+formulaire de contact, la création de compte, le bloc newsletter, les avis
+produits. Ce module pose le reCAPTCHA de Google sur ces quatre formulaires, et
+**vérifie chaque jeton côté serveur avant que la boutique ne traite la
+soumission**. Un jeton absent ou refusé, et le gestionnaire natif ne voit jamais
+le POST.
 
-### The contact form, protected
+### Le formulaire de contact, protégé
 
-![Contact form with the reCAPTCHA checkbox](docs/screenshots/contact-form.png)
+![Formulaire de contact avec la case reCAPTCHA](docs/screenshots/contact-form.png)
 
-*The screenshot was taken on a test shop using Google's official test keys —
-hence the red "testing purposes only" banner Google adds to them.*
+*Capture réalisée sur une boutique de test avec les clés de test officielles de
+Google — d'où la bannière rouge « for testing purposes only » que Google y
+ajoute.*
 
-### The back office
+### Le back-office
 
-![Back-office configuration screen](docs/screenshots/admin-settings.png)
+![Écran de configuration du module](docs/screenshots/admin-settings.png)
 
-Every field is in one screen: which versions to protect, per-form switches, the
-score threshold, what to do when Google is unreachable, and the messages the
-visitor sees. **Test the keys** calls Google from the server and tells you
-whether the pair works, is refused, or simply cannot be reached.
+Tout tient sur un seul écran : les versions à protéger, un interrupteur par
+formulaire, le score minimum, ce qui se passe quand Google est injoignable, et
+les messages affichés au visiteur. Le bouton **Tester les clés** appelle Google
+depuis le serveur et indique si la paire fonctionne, est refusée, ou est
+simplement injoignable.
 
-![The module reporting that Google cannot be reached](docs/screenshots/admin-selftest.png)
+![Le module signale que Google est injoignable](docs/screenshots/admin-selftest.png)
 
 ---
 
-## What it does
+## Ce que fait le module
 
-- **Three flavours**: reCAPTCHA v2 checkbox, v2 invisible, and v3 (invisible,
-  scored). v3 additionally checks the **score**, the **action** and, optionally,
-  the **hostname** Google reports.
-- **Four protected forms**, each with its own switch, its own action name and its
-  own score threshold: contact, account creation, newsletter, product reviews.
-- **A submission that fails never has side effects.** The module removes the
-  trigger fields (`contactform`, `ps_emailsubscription`, `productcomments`, …)
-  before the core handler runs, so nothing is stored, no customer is created and
-  no mail is sent. What the visitor typed is kept.
-- **Replay protection.** A token is accepted once, like Google itself does.
-- **Explicit failure modes.** A missing token or a refusal from Google is always
-  a refusal, whatever you configured. "Accept when Google cannot be reached"
-  only applies to transport outages — that is a business decision, not a
-  technical detail, so it is one switch and the warning is right above it.
-- **Multistore aware**: one settings row per shop.
-- **GDPR**: the module registers with the `registerGDPRConsent` hook, so a
-  consent manager can stop the widget from loading at all.
-- **No Composer, no build step.** The module ships its own PSR-4 autoloader.
+- **Trois versions** : reCAPTCHA v2 avec case à cocher, v2 invisible, et v3
+  (invisible, avec score). Pour la v3, le module contrôle en plus le **score**,
+  l'**action** et, en option, le **nom de domaine** que Google renvoie.
+- **Quatre formulaires protégés**, chacun avec son interrupteur, son nom
+  d'action et son score minimum : contact, création de compte, newsletter, avis
+  produits.
+- **Une soumission refusée ne produit aucun effet de bord.** Le module retire
+  les champs déclencheurs (`contactform`, `ps_emailsubscription`,
+  `productcomments`…) avant que le code natif ne s'exécute : rien n'est
+  enregistré, aucun compte n'est créé, aucun e-mail n'est envoyé. Ce que le
+  visiteur a tapé est conservé.
+- **Anti-rejeu.** Un jeton n'est accepté qu'une fois, exactement comme Google
+  le fait lui-même.
+- **Modes d'échec explicites.** Un jeton absent ou un refus de Google est
+  toujours un refus, quel que soit votre réglage. « Accepter quand Google est
+  injoignable » ne concerne que les pannes réseau : c'est un choix commercial,
+  pas un détail technique, donc un interrupteur — et l'avertissement est juste
+  au-dessus.
+- **Compatible multistore** : une ligne de configuration par boutique.
+- **RGPD** : le module s'enregistre sur le hook `registerGDPRConsent`, donc un
+  gestionnaire de consentement peut empêcher le widget de se charger.
+- **Sans Composer, sans build.** Le module embarque son propre autoloader
+  PSR-4.
 
-## Requirements
+## Prérequis
 
-- PrestaShop **8.2 LTS** or **9.x** (developed and tested against 8.2.8 and 9.2.0)
+- PrestaShop **8.2 LTS** ou **9.x** (développé et testé sur 8.2.8 et 9.2.0)
 - PHP 8.1+
-- A reCAPTCHA key pair from <https://www.google.com/recaptcha/admin>
+- Une paire de clés reCAPTCHA créée sur <https://www.google.com/recaptcha/admin>
 
-## Install
+## Installation
 
-Download the zip from the [Releases](../../releases) page (built from the tag,
-byte for byte the commit you see here), then in PrestaShop go
-to **Modules → Add a new module → Upload a module**, and install and configure
-it.
+Téléchargez le zip depuis la page [Releases](../../releases), puis dans
+PrestaShop : **Modules → Ajouter un nouveau module → Importer un module**, et
+installez et configurez le module.
 
-From a shell:
+En ligne de commande :
 
 ```bash
 unzip selestrecaptcha.zip -d modules/
 php modules/selestrecaptcha/tools/install-module.php
 ```
 
-Or straight from GitHub:
+Ou directement depuis GitHub :
 
 ```bash
 git clone https://github.com/fred-selest/ps-selestrecaptcha.git modules/selestrecaptcha
 php modules/selestrecaptcha/tools/install-module.php
 ```
 
-## Configure
+## Configuration
 
-1. Create a key pair for your domain in the reCAPTCHA console, then paste the
-   **site key** and the **secret key** here. **Test the keys** tells you
-   immediately whether the pair is accepted.
-2. Pick a version. Start with the v2 checkbox if you are not sure: it is the one
-   that works everywhere and the least surprising for customers.
-3. Leave **Refuse the submission** as the answer to "when Google cannot be
-   reached". You lose the odd customer during a Google outage, you never lose a
-   spam message. Switch it only if a lost lead is worse than a lost message.
-4. For v3, leave the threshold at `0.5` until you have real traffic, then watch
-   the `selestrecaptcha` log channel and tune it.
+1. Créez une paire de clés pour votre domaine dans la console reCAPTCHA, puis
+   collez la **clé du site** et la **clé secrète**. **Tester les clés** vous dit
+   immédiatement si la paire est acceptée.
+2. Choisissez une version. Commencez par la v2 avec case à cocher si vous
+   n'êtes pas sûr : c'est celle qui fonctionne partout et la moins susceptible
+   de surprendre vos clients.
+3. Laissez **Refuser la soumission** comme réponse à « quand Google est
+   injoignable ». Vous perdez le client occasionnel pendant une panne de Google,
+   vous ne perdez jamais un spam. Ne changez que si une commande perdue vous
+   coûte plus qu'un message perdu.
+4. En v3, laissez le seuil à `0.5` jusqu'à avoir du trafic réel, puis surveillez
+   le canal de log `selestrecaptcha` et ajustez.
 
-The secret key is never sent back to the browser, and an empty secret field on
-save means "keep the stored one".
+La clé secrète n'est jamais renvoyée au navigateur, et un champ secret laissé
+vide à l'enregistrement signifie « garder la clé enregistrée ».
 
-## Privacy
+## Vie privée
 
-Google receives the visitor's IP address and the page URL when the widget runs.
-Say so in your privacy policy — Google's
-[data processing terms](https://policies.google.com/terms) apply. With **Log
-every decision** on, the visitor's IP is written to the PrestaShop channel named
-`selestrecaptcha`; tokens and secrets are never logged.
+Google reçoit l'adresse IP du visiteur et l'URL de la page quand le widget
+s'affiche. Dites-le dans votre politique de confidentialité : les
+[conditions de traitement de Google](https://policies.google.com/terms)
+s'appliquent. Avec **Journaliser chaque décision** activé, l'IP du visiteur est
+écrite dans le canal PrestaShop `selestrecaptcha` ; les jetons et les clés
+secrètes ne sont jamais journalisés.
 
 ## Tests
 
@@ -119,38 +129,39 @@ composer install
 ./vendor/bin/phpunit
 ```
 
-End-to-end against a real shop, with a fake of Google's verification endpoint:
+End-to-end contre une vraie boutique, avec un faux du point de vérification de
+Google :
 
 ```bash
-php tests/e2e/e2e.php http://127.0.0.1 /path/to/prestashop ps828
+php tests/e2e/e2e.php http://127.0.0.1 /chemin/vers/prestashop ps828
 ```
 
-Back-office page, save round-trip and key self test:
+Page de back-office, aller-retour d'enregistrement et test des clés :
 
 ```bash
 php modules/selestrecaptcha/tools/render-admin.php --save --test
 ```
 
-The JavaScript is tested in a real browser (Chromium via Playwright), because
-the widget is exactly the part an HTTP-only test never executes:
+Le JavaScript est testé dans un vrai navigateur (Chromium via Playwright),
+parce que le widget est précisément ce qu'un test HTTP n'exécute jamais :
 
 ```bash
 pip install playwright && playwright install chromium
-python tests/e2e/browser.py http://127.0.0.1
+python tests/e2e/browser.py http://127.0.0.1 /chemin/vers/prestashop
 ```
 
-## Notes
+## À savoir
 
-- The verification endpoint is configurable so shops behind a firewall can point
-  at a local proxy. Plain HTTP is accepted for loopback addresses only; anything
-  else must be HTTPS.
-- This is not a rate limiter and not a firewall. Pair it with one if you are
-  under a real attack.
+- Le point de vérification est configurable, pour les boutiques derrière un
+  pare-feu qui veulent pointer vers un proxy local. Le HTTP simple n'est accepté
+  que pour les adresses de loopback ; tout le reste doit être en HTTPS.
+- Ce n'est ni un limiteur de débit ni un pare-feu. Complétez-le par l'un des deux
+  si vous subissez une véritable attaque.
 
 ## Support
 
-Issues and ideas: <https://github.com/fred-selest/ps-selestrecaptcha/issues>
+Problèmes et idées : <https://github.com/fred-selest/ps-selestrecaptcha/issues>
 
-## License
+## Licence
 
-AFL-3.0 — see [LICENSE](LICENSE).
+AFL-3.0 — voir [LICENSE](LICENSE).
