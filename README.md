@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/PrestaShop-8.2%20LTS%20%7C%209.x-8f5ba2?logo=prestashop&logoColor=white" alt="PrestaShop 8.2 LTS and 9.x">
   <img src="https://img.shields.io/badge/license-AFL--3.0-1f6feb" alt="AFL-3.0">
-  <img src="https://img.shields.io/badge/tests-85%20unit%20%2B%2033%20end--to--end-2ea44f" alt="Tests">
+  <img src="https://github.com/fred-selest/ps-selestrecaptcha/actions/workflows/tests.yml/badge.svg" alt="Tests">
 </p>
 
 ---
@@ -19,8 +19,6 @@ contact form, account creation, the newsletter block, product reviews. This
 module puts Google's reCAPTCHA on those four, and **verifies every token
 server-side before the shop acts on the submission**. A missing or refused token
 means the core handler never sees the POST.
-
-<!-- screenshots are stored in docs/screenshots/ -->
 
 ### The contact form, protected
 
@@ -71,7 +69,8 @@ whether the pair works, is refused, or simply cannot be reached.
 
 ## Install
 
-Download the zip from the [Releases](../../releases) page, then in PrestaShop go
+Download the zip from the [Releases](../../releases) page (built from the tag,
+byte for byte the commit you see here), then in PrestaShop go
 to **Modules → Add a new module → Upload a module**, and install and configure
 it.
 
