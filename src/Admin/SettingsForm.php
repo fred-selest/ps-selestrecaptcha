@@ -288,10 +288,10 @@ final class SettingsForm
     private function label(Target $target): string
     {
         return match ($target) {
-            Target::Contact => 'Contact form',
-            Target::Registration => 'Account creation',
-            Target::Newsletter => 'Newsletter registration',
-            Target::Comment => 'Product reviews',
+            Target::Contact => $this->t('Contact form', \Selestrecaptcha::TRANSLATION_DOMAIN),
+            Target::Registration => $this->t('Account creation', \Selestrecaptcha::TRANSLATION_DOMAIN),
+            Target::Newsletter => $this->t('Newsletter registration', \Selestrecaptcha::TRANSLATION_DOMAIN),
+            Target::Comment => $this->t('Product reviews', \Selestrecaptcha::TRANSLATION_DOMAIN),
         };
     }
 }

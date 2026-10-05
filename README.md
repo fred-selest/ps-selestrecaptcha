@@ -33,6 +33,10 @@ ajoute.*
 
 ![Écran de configuration du module](docs/screenshots/admin-settings.png)
 
+*(Capture sur une boutique dont le back-office est en anglais ; le module suit la
+langue de la boutique — en français, le même écran affiche « Protéger les
+formulaires de la boutique », « Tester les clés », « Enregistrer »…)*
+
 Tout tient sur un seul écran : les versions à protéger, un interrupteur par
 formulaire, le score minimum, ce qui se passe quand Google est injoignable, et
 les messages affichés au visiteur. Le bouton **Tester les clés** appelle Google
@@ -64,6 +68,9 @@ simplement injoignable.
   pas un détail technique, donc un interrupteur — et l'avertissement est juste
   au-dessus.
 - **Compatible multistore** : une ligne de configuration par boutique.
+- **Interface en français et en anglais** : le back-office suit la langue de la
+  boutique, et les messages affichés aux visiteurs sont traduits à
+  l'installation.
 - **RGPD** : le module s'enregistre sur le hook `registerGDPRConsent`, donc un
   gestionnaire de consentement peut empêcher le widget de se charger.
 - **Sans Composer, sans build.** Le module embarque son propre autoloader

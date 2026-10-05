@@ -46,7 +46,7 @@ $languageId = (int) (Configuration::get('PS_LANG_DEFAULT') ?: Configuration::get
 $context->language = new Language($languageId);
 
 if (!Validate::isLoadedObject($context->language)) {
-    fwrite(STDERR, "Could not load the default language of the shop\n");
+    fwrite(STDERR, "Impossible de charger la langue par défaut de la boutique\n");
     exit(1);
 }
 $context->country = new Country((int) Configuration::get('PS_COUNTRY_DEFAULT'));
@@ -55,7 +55,7 @@ $context->employee = new Employee(1);
 $overrides = json_decode((string) ($argv[1] ?? '{}'), true);
 
 if (!is_array($overrides)) {
-    fwrite(STDERR, "Usage: set-settings.php '{\"key\": value}'\n");
+    fwrite(STDERR, "Usage : set-settings.php '{\"key\": value}'\n");
     exit(1);
 }
 
@@ -68,7 +68,7 @@ $updated = SelestRecaptcha\Config\Settings::fromArray(
 );
 
 if (!$store->save($updated, $context->shop->id)) {
-    fwrite(STDERR, "Could not save the settings\n");
+    fwrite(STDERR, "Impossible d'enregistrer les paramètres\n");
     exit(1);
 }
 

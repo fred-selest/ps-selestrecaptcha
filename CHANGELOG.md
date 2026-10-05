@@ -1,45 +1,55 @@
-# Changelog
+# Journal des modifications
 
-All notable changes to this project are documented here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
-[semantic versioning](https://semver.org/spec/v2.0.0.html).
+Les évolutions notables de ce projet sont décrites ici. Le format suit
+[Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), et le projet utilise
+le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [1.0.0]
 
-First release.
+Première version.
 
-### Added
+### Ajouté
 
-- reCAPTCHA v2 checkbox, v2 invisible and v3, verified server-side against
-  Google's `siteverify` before any core handler sees the submission.
-- Protected forms: contact, account creation, newsletter and product reviews,
-  each with its own switch, action name and score threshold.
-- Refusal path that removes the submission trigger fields instead of letting the
-  core handler run, while keeping what the visitor typed.
-- Fail-closed / fail-open behaviour, applied to transport outages only: a missing
-  token or an explicit refusal from Google is always refused.
-- Single-use token handling, so a captured token cannot be replayed.
-- Score, action and hostname checks for v3.
-- Per-shop settings on multistore installs.
-- Back-office configuration screen with a "Test the keys" diagnostic; the secret
-  key is never sent back to the browser.
-- GDPR consent integration through the `registerGDPRConsent` hook.
-- Test-key detection, with a warning in the back office.
-- A fallback PSR-4 autoloader: no Composer install on the merchant's server.
-- Test suites: unit, integration (a fake of Google's endpoint), end-to-end over
-  real HTTP against PrestaShop 8.2.8 and 9.2.0, a back-office rendering harness,
-  and a browser test for the widget.
+- reCAPTCHA v2 avec case à cocher, v2 invisible et v3, vérifiés côté serveur
+  via `siteverify` de Google avant que le gestionnaire natif ne voie la
+  soumission.
+- Formulaires protégés : contact, création de compte, newsletter et avis
+  produits, chacun avec son interrupteur, son nom d'action et son score
+  minimum.
+- Chemin de refus qui retire les champs déclencheurs au lieu de laisser le
+  code natif s'exécuter, tout en conservant la saisie du visiteur.
+- Comportement fail-closed / fail-open appliqué aux seules pannes réseau : un
+  jeton absent ou un refus explicite de Google est toujours refusé.
+- Gestion des jetons à usage unique : un jeton capturé ne peut pas être rejoué.
+- Contrôles de score, d'action et de nom de domaine pour la v3.
+- Réglages par boutique sur les installations multistore.
+- Écran de configuration dans le back-office avec un diagnostic « Tester les
+  clés » ; la clé secrète n'est jamais renvoyée au navigateur.
+- Intégration RGPD via le hook `registerGDPRConsent`.
+- Détection des clés de test de Google, avec un avertissement dans le
+  back-office.
+- Un autoloader PSR-4 de secours : aucune installation de Composer sur le
+  serveur du marchand.
+- Traductions **français et anglais** de l'interface (`translations/fr-FR`).
+- Suites de tests : unitaires, intégration (un faux du point de vérification de
+  Google), end-to-end en HTTP réel contre PrestaShop 8.2.8 et 9.2.0, un harnais
+  de rendu du back-office, et un test navigateur pour le widget.
 
-### Fixed
+### Corrigé
 
-- Per-shop settings were never read: `Configuration::get()` takes the shop group
-  before the shop, and the module passed the shop id in the wrong slot.
-- Saving could silently do nothing. The row was deleted before
-  `Configuration::updateValue()`, whose `hasKey()` answers from the cache built
-  when the request booted, so PrestaShop took its UPDATE branch, matched no row,
-  and reported success.
-- On a shop without the multistore feature, settings were written with an
-  `id_shop` and never read back; everything belongs to the global row there.
-- The widget could stay invisible: a queued callback was invoked without the
-  `grecaptcha` object, and the resulting error was swallowed by the "a broken
-  third-party script must not take the page down" guard.
+- Les réglages par boutique n'étaient jamais lus : `Configuration::get()`
+  attend le groupe de boutiques avant la boutique, et le module passait l'identifiant
+  de boutique dans le mauvais paramètre.
+- Un enregistrement pouvait ne rien faire sans prévenir. La ligne était supprimée
+  avant `Configuration::updateValue()`, dont `hasKey()` répond depuis le cache
+  construit au démarrage de la requête : PrestaShop prenait sa branche UPDATE,
+  ne trouvait aucune ligne, et déclarait pourtant avoir enregistré.
+- Sur une boutique sans la fonction multistore, les réglages étaient écrits
+  avec un `id_shop` et n'étaient jamais relus : tout y passe par la ligne
+  globale.
+- Le widget pouvait rester invisible : un callback en attente était appelé sans
+  l'objet `grecaptcha`, et l'erreur qui en découlait était avalée par le garde-fou
+  « un script tiers cassé ne doit pas casser la page ».
+- Les quatre libellés de formulaires (contact, création de compte, newsletter,
+  avis produits) n'étaient pas traduisibles : ils ne passaient pas par le
+  traducteur.

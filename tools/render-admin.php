@@ -25,7 +25,7 @@ foreach (glob($rootDir . '/admin*', GLOB_ONLYDIR) ?: [] as $candidate) {
 }
 
 if ($adminDir === null) {
-    fwrite(STDERR, "No admin directory in $rootDir\n");
+    fwrite(STDERR, "Aucun dossier d'administration dans $rootDir\n");
     exit(1);
 }
 
@@ -60,16 +60,38 @@ $context->employee = new Employee((int) (getenv('PS_EMPLOYEE_ID') ?: 1));
 
 // AdminController points Smarty at the admin theme before rendering anything;
 // without it the helper templates cannot be found.
+$options = getopt('', ['save', 'test', 'dump:', 'locale:']);
+
+// Renders the page in another language, which is how translations get checked:
+// a French install shows the French strings without the shop needing a French
+// language pack installed. The catalogues have to be loaded the way an admin
+// request loads them, otherwise nothing is translated.
+if (isset($options['locale'])) {
+    $locale = (string) $options['locale'];
+    $translator = $context->getTranslator();
+
+    if (method_exists($translator, 'isLanguageLoaded') && !$translator->isLanguageLoaded($locale)) {
+        $loader = $GLOBALS['kernel']->getContainer()->get('prestashop.translation.translator_language_loader');
+        $loader->setIsAdminContext(true);
+        $translator->addLoader('xlf', new Symfony\Component\Translation\Loader\XliffFileLoader());
+        $loader->loadLanguage($translator, $locale, true);
+    }
+
+    $translator->setLocale($locale);
+    // Context::getTranslator() hands the locale back to the shop language on
+    // every call, so both have to move together.
+    $context->language->locale = $locale;
+}
+
 $adminTheme = Configuration::get('PS_ADMIN_THEME') ?: 'default';
 $context->smarty->setTemplateDir($adminDir . '/themes/' . $adminTheme . '/template/');
 $context->smarty->setCompileDir($adminDir . '/themes/' . $adminTheme . '/template/cache/');
 
 if (!Validate::isLoadedObject($context->employee)) {
-    fwrite(STDERR, "No employee in this shop; the back office cannot be rendered.\n");
+    fwrite(STDERR, "Aucun employé dans cette boutique ; le back-office ne peut pas être rendu.\n");
     exit(1);
 }
 
-$options = getopt('', ['save', 'test', 'dump:']);
 $save = array_key_exists('save', $options);
 $test = array_key_exists('test', $options);
 
@@ -79,7 +101,7 @@ require_once _PS_MODULE_DIR_ . 'selestrecaptcha/selestrecaptcha.php';
 $module = Selestrecaptcha::getInstanceByName('selestrecaptcha');
 
 if ($module === null) {
-    fwrite(STDERR, "The module is not installed in this shop.\n");
+    fwrite(STDERR, "Le module n'est pas installé dans cette boutique.\n");
     exit(1);
 }
 
@@ -116,24 +138,24 @@ if ($test) {
 
 $html = $module->getContent();
 
-printf("rendered %d bytes\n", strlen($html));
+printf("%d octets rendus\n", strlen($html));
 
 if (isset($options['dump'])) {
     file_put_contents($options['dump'], $html);
-    printf("  written to %s\n", $options['dump']);
+    printf("  écrit dans %s\n", $options['dump']);
 }
 
 $expected = [
-    'selestrecaptcha[version]' => 'the version selector',
-    'selestrecaptcha[site_key]' => 'the site key field',
-    'selestrecaptcha[secret_key]' => 'the secret key field',
-    'selestrecaptcha[min_score]' => 'the score threshold',
-    'selestrecaptcha[fail_mode]' => 'the failure mode',
-    'selestrecaptcha[targets][contact][action]' => 'the contact form action',
-    'selestrecaptcha[targets][newsletter][enabled]' => 'the newsletter switch',
-    'selestrecaptcha[targets][comment][min_score]' => 'the review threshold',
-    'selestrecaptcha_test' => 'the key self test',
-    'selestrecaptcha[messages][block]' => 'the visitor message',
+    'selestrecaptcha[version]' => 'le sélecteur de version',
+    'selestrecaptcha[site_key]' => 'le champ clé du site',
+    'selestrecaptcha[secret_key]' => 'le champ clé secrète',
+    'selestrecaptcha[min_score]' => 'le score minimum',
+    'selestrecaptcha[fail_mode]' => 'le mode de panne',
+    'selestrecaptcha[targets][contact][action]' => 'l\'action du formulaire de contact',
+    'selestrecaptcha[targets][newsletter][enabled]' => 'l\'interrupteur newsletter',
+    'selestrecaptcha[targets][comment][min_score]' => 'le seuil des avis',
+    'selestrecaptcha_test' => 'le test des clés',
+    'selestrecaptcha[messages][block]' => 'le message au visiteur',
 ];
 
 $failures = 0;
@@ -141,24 +163,24 @@ $failures = 0;
 foreach ($expected as $needle => $label) {
     $ok = str_contains($html, $needle);
     $failures += $ok ? 0 : 1;
-    printf("  %-52s %s\n", $label, $ok ? 'present' : 'MISSING');
+    printf("  %-52s %s\n", $label, $ok ? 'présent' : 'MANQUANT');
 }
 
 $echoesSecret = (bool) preg_match('/name="selestrecaptcha\[secret_key\]"[^>]*value="[^"]+"/', $html);
-printf("  %-52s %s\n", 'the secret key is not echoed back', $echoesSecret ? 'LEAKED' : 'masked');
+printf("  %-52s %s\n", 'la clé secrète n\'est pas renvoyée au navigateur', $echoesSecret ? 'FUITE' : 'masquée');
 $failures += $echoesSecret ? 1 : 0;
 
 foreach (['Settings saved.', 'Google accepted the secret key', 'Google refused the secret key', 'could not be reached'] as $notice) {
     if (str_contains($html, $notice)) {
-        printf("  notice: %s\n", $notice);
+        printf("  message : %s\n", $notice);
     }
 }
 
 if ($save) {
     $saved = (new SelestRecaptcha\Config\ConfigurationStore())->load($context->shop->id);
-    printf("  stored version: %s\n", $saved->version);
+    printf("  version enregistrée : %s\n", $saved->version);
 }
 
-printf("%s\n", $failures === 0 ? 'OK' : $failures . ' problem(s)');
+printf("%s\n", $failures === 0 ? 'OK' : $failures . ' problème(s)');
 
 exit($failures === 0 ? 0 : 1);

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 Selest — translated by hand, kept in sync with the English source. -->
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="fr-FR" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1" resname="Accept the submission">
+                <source>Accept the submission</source>
+                <target>Accepter la soumission</target>
+            </trans-unit>
+            <trans-unit id="2" resname="Account creation">
+                <source>Account creation</source>
+                <target>Création de compte</target>
+            </trans-unit>
+            <trans-unit id="3" resname="Action name (v3)">
+                <source>Action name (v3)</source>
+                <target>Nom de l&#x27;action (v3)</target>
+            </trans-unit>
+            <trans-unit id="4" resname="Activation">
+                <source>Activation</source>
+                <target>Activation</target>
+            </trans-unit>
+            <trans-unit id="5" resname="Advanced">
+                <source>Advanced</source>
+                <target>Avancé</target>
+            </trans-unit>
+            <trans-unit id="6" resname="Between 0 and 1. Google suggests starting at 0.5.">
+                <source>Between 0 and 1. Google suggests starting at 0.5.</source>
+                <target>Entre 0 et 1. Google suggère de commencer à 0,5.</target>
+            </trans-unit>
+            <trans-unit id="7" resname="Captcha not completed">
+                <source>Captcha not completed</source>
+                <target>Captcha non complété</target>
+            </trans-unit>
+            <trans-unit id="8" resname="Channel &quot;selestrecaptcha&quot; in the PrestaShop logs. The visitor IP is logged; tokens and secrets never are.">
+                <source>Channel &quot;selestrecaptcha&quot; in the PrestaShop logs. The visitor IP is logged; tokens and secrets never are.</source>
+                <target>Canal « selestrecaptcha » dans les journaux PrestaShop. L&#x27;IP du visiteur est journalisée ; les jetons et les clés secrètes ne le sont jamais.</target>
+            </trans-unit>
+            <trans-unit id="9" resname="Check the hostname Google reports">
+                <source>Check the hostname Google reports</source>
+                <target>Vérifier le nom de domaine renvoyé par Google</target>
+            </trans-unit>
+            <trans-unit id="10" resname="Contact form">
+                <source>Contact form</source>
+                <target>Formulaire de contact</target>
+            </trans-unit>
+            <trans-unit id="11" resname="Fill in the site key and the secret key first.">
+                <source>Fill in the site key and the secret key first.</source>
+                <target>Renseignez d&#x27;abord la clé du site et la clé secrète.</target>
+            </trans-unit>
+            <trans-unit id="12" resname="Google accepted the secret key and this shop can reach the verification endpoint.">
+                <source>Google accepted the secret key and this shop can reach the verification endpoint.</source>
+                <target>Google a accepté la clé secrète et cette boutique peut joindre le point de vérification.</target>
+            </trans-unit>
+            <trans-unit id="13" resname="Google reCAPTCHA for the contact form, account creation, newsletter and product reviews.">
+                <source>Google reCAPTCHA for the contact form, account creation, newsletter and product reviews.</source>
+                <target>reCAPTCHA de Google pour le formulaire de contact, la création de compte, la newsletter et les avis produits.</target>
+            </trans-unit>
+            <trans-unit id="14" resname="Google refused the secret key. Copy it again from the reCAPTCHA console.">
+                <source>Google refused the secret key. Copy it again from the reCAPTCHA console.</source>
+                <target>Google a refusé la clé secrète. Recopiez-la depuis la console reCAPTCHA.</target>
+            </trans-unit>
+            <trans-unit id="15" resname="Google unreachable">
+                <source>Google unreachable</source>
+                <target>Google injoignable</target>
+            </trans-unit>
+            <trans-unit id="16" resname="Google&#x27;s test keys are in use: every captcha will pass, including those of bots. Use them on staging only.">
+                <source>Google&#x27;s test keys are in use: every captcha will pass, including those of bots. Use them on staging only.</source>
+                <target>Les clés de test de Google sont utilisées : tous les captchas passent, y compris ceux des robots. À réserver à la préproduction.</target>
+            </trans-unit>
+            <trans-unit id="17" resname="HTTPS only. Point it at a proxy when Google is unreachable from your country.">
+                <source>HTTPS only. Point it at a proxy when Google is unreachable from your country.</source>
+                <target>HTTPS uniquement. Indiquez un proxy lorsque Google est injoignable depuis votre pays.</target>
+            </trans-unit>
+            <trans-unit id="18" resname="Log every decision">
+                <source>Log every decision</source>
+                <target>Journaliser chaque décision</target>
+            </trans-unit>
+            <trans-unit id="19" resname="Messages shown to the visitor">
+                <source>Messages shown to the visitor</source>
+                <target>Messages affichés au visiteur</target>
+            </trans-unit>
+            <trans-unit id="20" resname="Minimum score (blank = global)">
+                <source>Minimum score (blank = global)</source>
+                <target>Score minimum (vide = global)</target>
+            </trans-unit>
+            <trans-unit id="21" resname="Minimum score (v3)">
+                <source>Minimum score (v3)</source>
+                <target>Score minimum (v3)</target>
+            </trans-unit>
+            <trans-unit id="22" resname="Newsletter registration">
+                <source>Newsletter registration</source>
+                <target>Inscription à la newsletter</target>
+            </trans-unit>
+            <trans-unit id="23" resname="No">
+                <source>No</source>
+                <target>Non</target>
+            </trans-unit>
+            <trans-unit id="24" resname="Product reviews">
+                <source>Product reviews</source>
+                <target>Avis produits</target>
+            </trans-unit>
+            <trans-unit id="25" resname="Protect the shop forms">
+                <source>Protect the shop forms</source>
+                <target>Protéger les formulaires de la boutique</target>
+            </trans-unit>
+            <trans-unit id="26" resname="Protected forms">
+                <source>Protected forms</source>
+                <target>Formulaires protégés</target>
+            </trans-unit>
+            <trans-unit id="27" resname="Protection is enabled but no key is set: nothing is being verified yet.">
+                <source>Protection is enabled but no key is set: nothing is being verified yet.</source>
+                <target>La protection est activée mais aucune clé n&#x27;est renseignée : rien n&#x27;est encore vérifié.</target>
+            </trans-unit>
+            <trans-unit id="28" resname="Refuse the submission">
+                <source>Refuse the submission</source>
+                <target>Refuser la soumission</target>
+            </trans-unit>
+            <trans-unit id="29" resname="Refuses tokens solved on a domain other than this shop.">
+                <source>Refuses tokens solved on a domain other than this shop.</source>
+                <target>Refuse les jetons résolus sur un domaine autre que celui de cette boutique.</target>
+            </trans-unit>
+            <trans-unit id="30" resname="Save">
+                <source>Save</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+            <trans-unit id="31" resname="Score too low">
+                <source>Score too low</source>
+                <target>Score trop faible</target>
+            </trans-unit>
+            <trans-unit id="32" resname="Secret key">
+                <source>Secret key</source>
+                <target>Clé secrète</target>
+            </trans-unit>
+            <trans-unit id="33" resname="Settings could not be saved.">
+                <source>Settings could not be saved.</source>
+                <target>Les paramètres n&#x27;ont pas pu être enregistrés.</target>
+            </trans-unit>
+            <trans-unit id="34" resname="Settings saved.">
+                <source>Settings saved.</source>
+                <target>Paramètres enregistrés.</target>
+            </trans-unit>
+            <trans-unit id="35" resname="Site key">
+                <source>Site key</source>
+                <target>Clé du site</target>
+            </trans-unit>
+            <trans-unit id="36" resname="Test the keys">
+                <source>Test the keys</source>
+                <target>Tester les clés</target>
+            </trans-unit>
+            <trans-unit id="37" resname="The verification endpoint could not be reached from this server. With &quot;refuse the submission&quot; selected, every form will be blocked while this lasts.">
+                <source>The verification endpoint could not be reached from this server. With &quot;refuse the submission&quot; selected, every form will be blocked while this lasts.</source>
+                <target>Le point de vérification n&#x27;a pas pu être joint depuis ce serveur. Tant que « refuser la soumission » est sélectionné, tous les formulaires seront bloqués.</target>
+            </trans-unit>
+            <trans-unit id="38" resname="Timeout (seconds)">
+                <source>Timeout (seconds)</source>
+                <target>Délai d&#x27;attente (secondes)</target>
+            </trans-unit>
+            <trans-unit id="39" resname="Verification endpoint">
+                <source>Verification endpoint</source>
+                <target>Point de vérification</target>
+            </trans-unit>
+            <trans-unit id="40" resname="When Google cannot be reached">
+                <source>When Google cannot be reached</source>
+                <target>Quand Google est injoignable</target>
+            </trans-unit>
+            <trans-unit id="41" resname="Yes">
+                <source>Yes</source>
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit id="42" resname="reCAPTCHA anti-spam">
+                <source>reCAPTCHA anti-spam</source>
+                <target>Anti-spam reCAPTCHA</target>
+            </trans-unit>
+            <trans-unit id="43" resname="reCAPTCHA version">
+                <source>reCAPTCHA version</source>
+                <target>Version de reCAPTCHA</target>
+            </trans-unit>
+            <trans-unit id="44" resname="v2 — &quot;I am not a robot&quot; checkbox">
+                <source>v2 — &quot;I am not a robot&quot; checkbox</source>
+                <target>v2 — case à cocher « Je ne suis pas un robot »</target>
+            </trans-unit>
+            <trans-unit id="45" resname="v2 — invisible">
+                <source>v2 — invisible</source>
+                <target>v2 — invisible</target>
+            </trans-unit>
+            <trans-unit id="46" resname="v3 — invisible, scored">
+                <source>v3 — invisible, scored</source>
+                <target>v3 — invisible, avec score</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

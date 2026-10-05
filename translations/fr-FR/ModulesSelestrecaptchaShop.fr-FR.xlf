@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2026 Selest — translated by hand, kept in sync with the English source. -->
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="fr-FR" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1" resname="Please complete the captcha to continue.">
+                <source>Please complete the captcha to continue.</source>
+                <target>Veuillez compléter le captcha pour continuer.</target>
+            </trans-unit>
+            <trans-unit id="2" resname="The captcha service is temporarily unavailable. Please try again.">
+                <source>The captcha service is temporarily unavailable. Please try again.</source>
+                <target>Le service captcha est temporairement indisponible. Merci de réessayer.</target>
+            </trans-unit>
+            <trans-unit id="3" resname="Your submission was flagged as automated. Please try again.">
+                <source>Your submission was flagged as automated. Please try again.</source>
+                <target>Votre envoi a été détecté comme automatique. Merci de réessayer.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

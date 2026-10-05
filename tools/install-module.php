@@ -48,7 +48,7 @@ $languageId = (int) (Configuration::get('PS_LANG_DEFAULT') ?: Configuration::get
 $context->language = new Language($languageId);
 
 if (!Validate::isLoadedObject($context->language)) {
-    fwrite(STDERR, "Could not load the default language of the shop\n");
+    fwrite(STDERR, "Impossible de charger la langue par défaut de la boutique\n");
     exit(1);
 }
 $context->country = new Country((int) Configuration::get('PS_COUNTRY_DEFAULT'));
@@ -58,7 +58,7 @@ $moduleName = 'selestrecaptcha';
 $modulePath = _PS_MODULE_DIR_ . $moduleName;
 
 if (!is_dir($modulePath)) {
-    fwrite(STDERR, "Module directory not found: $modulePath\n");
+    fwrite(STDERR, "Répertoire du module introuvable : $modulePath\n");
     exit(1);
 }
 
@@ -67,17 +67,17 @@ require_once $modulePath . '/' . $moduleName . '.php';
 $module = Module::getInstanceByName($moduleName);
 
 if ($module === null) {
-    fwrite(STDERR, "Cannot instantiate the module\n");
+    fwrite(STDERR, "Impossible d'instancier le module\n");
     exit(1);
 }
 
-echo 'shop: PS ' . _PS_VERSION_ . ' / PHP ' . PHP_VERSION . "\n";
+echo 'boutique : PS ' . _PS_VERSION_ . ' / PHP ' . PHP_VERSION . "\n";
 
 if (!Module::isInstalled($moduleName)) {
     $errors = [];
 
     if (!$module->install()) {
-        fwrite(STDERR, 'install FAILED: ' . implode(' | ', array_merge($errors, $module->getErrors())) . "\n");
+        fwrite(STDERR, 'installation ÉCHOUÉE : ' . implode(' | ', array_merge($errors, $module->getErrors())) . "\n");
         exit(1);
     }
 
@@ -86,18 +86,18 @@ if (!Module::isInstalled($moduleName)) {
 }
 
 if (!Module::isInstalled($moduleName)) {
-    fwrite(STDERR, "The module is still not registered in the shop\n");
+    fwrite(STDERR, "Le module n'est toujours pas enregistré dans la boutique\n");
     exit(1);
 }
 
-echo 'module version: ' . $module->version . "\n";
+echo 'version du module : ' . $module->version . "\n";
 
 if (!$module->enable()) {
-    fwrite(STDERR, "enable FAILED\n");
+    fwrite(STDERR, "activation ÉCHOUÉE\n");
     exit(1);
 }
 
-echo "enabled: yes\n";
+echo "activé : oui\n";
 
 $hooks = Db::getInstance()->executeS(
     'SELECT h.name FROM `' . _DB_PREFIX_ . 'hook` h
@@ -106,7 +106,7 @@ $hooks = Db::getInstance()->executeS(
      ORDER BY h.name'
 );
 
-echo 'hooks: ' . implode(', ', array_column($hooks, 'name')) . "\n";
+echo 'hooks : ' . implode(', ', array_column($hooks, 'name')) . "\n";
 
 $store = new SelestRecaptcha\Config\ConfigurationStore();
 $current = $store->load();
@@ -121,13 +121,13 @@ $updated = SelestRecaptcha\Config\Settings::fromArray(array_merge($current->toAr
 ]));
 
 if (!$store->save($updated)) {
-    fwrite(STDERR, "Could not save the settings\n");
+    fwrite(STDERR, "Impossible d'enregistrer les paramètres\n");
     exit(1);
 }
 
-echo 'settings: ' . json_encode($updated->toArray(), JSON_UNESCAPED_SLASHES) . "\n";
+echo 'paramètres : ' . json_encode($updated->toArray(), JSON_UNESCAPED_SLASHES) . "\n";
 
 $outcome = (new SelestRecaptcha\Diagnostics\KeyChecker(new SelestRecaptcha\Http\CurlTransport()))->check($updated);
-echo 'key check: ' . $outcome . "\n";
+echo 'vérification des clés : ' . $outcome . "\n";
 
 echo "OK\n";

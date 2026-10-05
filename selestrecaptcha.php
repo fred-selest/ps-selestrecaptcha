@@ -95,7 +95,7 @@ class Selestrecaptcha extends Module
         $store = new ConfigurationStore();
 
         if (!$store->exists()) {
-            $store->save(Settings::defaults());
+            $store->save(Settings::defaults($this->translatedMessages()));
         }
 
         return true;
@@ -363,6 +363,25 @@ class Selestrecaptcha extends Module
         }
 
         return $merged;
+    }
+
+    /**
+     * The visitor-facing defaults, in the language of the shop: a French shop
+     * should not start by telling customers "Please complete the captcha to
+     * continue." in English.
+     *
+     * @return array<string, string>
+     */
+    private function translatedMessages(): array
+    {
+        $defaults = Settings::defaultMessages();
+        $translated = [];
+
+        foreach (array_keys($defaults) as $key) {
+            $translated[$key] = $this->trans($defaults[$key], [], self::FRONT_DOMAIN);
+        }
+
+        return $translated;
     }
 
     private function renderForm(Settings $settings): string

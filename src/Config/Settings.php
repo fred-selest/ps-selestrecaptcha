@@ -68,14 +68,16 @@ final class Settings
     ) {
     }
 
-    public static function defaults(): self
+    public static function defaults(?array $messages = null): self
     {
         $targets = [];
         foreach (Target::all() as $target) {
             $targets[$target->value] = new TargetSettings(true, $target->defaultAction());
         }
 
-        return new self(targets: $targets, messages: self::defaultMessages());
+        // The module passes the visitor-facing strings translated into the shop's
+        // language at install time; the English ones are the neutral fallback.
+        return new self(targets: $targets, messages: $messages ?? self::defaultMessages());
     }
 
     /**
