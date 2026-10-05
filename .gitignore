@@ -1,0 +1,6 @@
+/vendor/
+/composer.lock
+/.phpunit.cache/
+/tests/.google-state.json
+/tests/Integration/.google-state.json
+/tests/e2e/*.html

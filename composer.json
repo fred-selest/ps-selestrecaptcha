@@ -1,0 +1,36 @@
+{
+    "name": "fred-selest/ps-selestrecaptcha",
+    "description": "Google reCAPTCHA (v2 checkbox / v2 invisible / v3) anti-spam module for PrestaShop 8.2 LTS and 9.x",
+    "type": "prestashop-module",
+    "license": "AFL-3.0",
+    "authors": [
+        {
+            "name": "Fred Selest"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "SelestRecaptcha\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SelestRecaptcha\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit --testsuite unit",
+        "test:integration": "phpunit --testsuite integration"
+    }
+}

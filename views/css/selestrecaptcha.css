@@ -1,0 +1,29 @@
+/**
+ * Selest reCAPTCHA — front office styles.
+ *
+ * The widget is placed by JavaScript just before the submit button, so the only
+ * thing left to do here is to make sure it does not break the layout of a theme
+ * we know nothing about, and that the error is visible without styling.
+ */
+
+.selestrecaptcha-widget {
+  clear: both;
+  margin: 0 0 1rem;
+  max-width: 400px;
+}
+
+.selestrecaptcha-alert {
+  background: #d9534f;
+  border: 1px solid #d43f3a;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 0.9em;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selestrecaptcha-widget iframe {
+    transition: none !important;
+  }
+}
