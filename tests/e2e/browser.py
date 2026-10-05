@@ -12,7 +12,7 @@ the widget is on the page, that it hands a token to the form, and that the
 submission goes through because of it.
 
     pip install playwright && playwright install chromium
-    python tests/e2e/browser.py http://127.0.0.1
+    python tests/e2e/browser.py http://127.0.0.1 /path/to/prestashop
 
 Use Google's test keys (6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI) or a real key
 pair registered for the host: any other site key is refused by Google and the
@@ -20,12 +20,29 @@ widget stays empty. Point the verification endpoint at tests/e2e/router.php
 (see tests/Integration/fake-google.php) to keep the run offline.
 """
 
+import json
+import os
+import subprocess
 import sys
 
 from playwright.sync_api import sync_playwright
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1"
+SHOP = sys.argv[2] if len(sys.argv) > 2 else ""
 CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
+
+# Google's own test keys: they render for any domain, and Google says so on the
+# widget. A key that is not registered for the host is refused and the widget
+# simply never appears, which looks like a broken module.
+TEST_KEYS = {
+    "enabled": True,
+    "version": "v2_checkbox",
+    "site_key": "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+    "secret_key": "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",
+    "endpoint": "https://www.google.com/recaptcha/api/siteverify",
+    "fail_mode": "closed",
+    "min_score": 0.5,
+}
 
 failures = []
 
@@ -36,7 +53,22 @@ def check(label, condition, detail=""):
         failures.append(label)
 
 
+def configure() -> None:
+    """Puts the module in a state where the widget has to appear."""
+    tool = f"{SHOP}/modules/selestrecaptcha/tools/set-settings.php"
+
+    if not os.path.isfile(tool):
+        print("No shop path given: enable the module and use Google's test keys, or pass the shop path.")
+        return
+
+    subprocess.run(["php", tool, json.dumps(TEST_KEYS)], check=True, capture_output=True)
+    print("Module configured with Google's test keys.")
+
+
 def main() -> int:
+    if SHOP:
+        configure()
+
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=CHROME, args=["--no-sandbox", "--disable-dev-shm-usage"])
         page = browser.new_context(ignore_https_errors=True, viewport={"width": 1440, "height": 1000}).new_page()
