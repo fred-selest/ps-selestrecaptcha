@@ -135,6 +135,24 @@ s'appliquent. Avec **Journaliser chaque décision** activé, l'IP du visiteur es
 écrite dans le canal PrestaShop `selestrecaptcha` ; les jetons et les clés
 secrètes ne sont jamais journalisés.
 
+## Activer la CI et la release (une fois pour toutes)
+
+Les deux fichiers de workflow sont dans [`tools/github-actions/`](tools/github-actions/) :
+
+| Fichier | Ce qu'il fait |
+|---|---|
+| `tests.yml` | lance PHPUnit sur PHP 8.1, 8.2 et 8.3 à chaque push |
+| `release.yml` | construit le ZIP et publie la GitHub release dès qu'un tag est poussé |
+
+Pour les activer : copier chaque fichier dans `.github/workflows/` du dépôt
+(*Add file → Create new file*), puis pousser un tag :
+
+```bash
+git tag v1.0.0 && git push --follow-tags
+```
+
+Le ZIP des merchants est toujours construit depuis un commit exact.
+
 ## Tests
 
 ```bash

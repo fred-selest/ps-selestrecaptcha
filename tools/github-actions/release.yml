@@ -1,0 +1,34 @@
+name: release
+
+# Pushing a tag such as v1.0.0 builds the installable zip and publishes it as a
+# GitHub release, so the archive PrestaShop merchants upload is always built from
+# an exact commit.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build the archive and publish the release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the module archive
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          git archive --format=zip --prefix=selestrecaptcha/ -o "selestrecaptcha-${VERSION}.zip" HEAD
+          unzip -l "selestrecaptcha-${VERSION}.zip" | tail -3
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "Selest reCAPTCHA ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            "selestrecaptcha-${GITHUB_REF_NAME}.zip"

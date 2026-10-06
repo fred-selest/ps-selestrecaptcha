@@ -1,0 +1,40 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit:
+    name: Unit and integration tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Lint every source file
+        run: |
+          find selestrecaptcha.php src tools tests upgrade -name '*.php' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Run the test suite
+        run: ./vendor/bin/phpunit
+
+      - name: Check the module archive is buildable
+        run: |
+          git archive --format=zip --prefix=selestrecaptcha/ -o /tmp/selestrecaptcha.zip HEAD
+          unzip -l /tmp/selestrecaptcha.zip | tail -1
